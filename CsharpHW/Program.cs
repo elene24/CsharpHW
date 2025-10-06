@@ -1,54 +1,46 @@
 ﻿using System;
-using System.Globalization;
 
-class Program
+public class Program
 {
-    static void Main()
+    public static void Main()
     {
-       
-            Console.WriteLine("Enter text:");
-            string input = Console.ReadLine();
-
-            string result = CapitalizeSentences(input);
-            Console.WriteLine(result);
-        }
-
-        static string CapitalizeSentences(string text)
+        try
         {
-            if (string.IsNullOrWhiteSpace(text))
-                return text;
 
-            char[] sentenceEndings = { '.', '!', '?' };
-            string[] sentences = text.Split(sentenceEndings, StringSplitOptions.None);
+            Human person = new Human(
+                "Elene",
+                "Margalitadze",
+                25,
+                "01024085079",
+                "555123456",
+                "elenemarg@email.com"
+            );
+            person.DisplayInfoInConsole();
 
-            string result = "";
-            int currentIndex = 0;
 
-            foreach (string sentence in sentences)
-            {
-                string trimmed = sentence.Trim();
-                if (!string.IsNullOrEmpty(trimmed))
-                {
-                    string capitalized = char.ToUpper(trimmed[0], CultureInfo.InvariantCulture) + trimmed.Substring(1);
-                    result += capitalized;
+            Account account1 = new Account("GE00TB0000000000000001", "GEL", 1000);
+            Account account2 = new Account("GE00TB0000000000000002", "GEL", 500);
+            Account account3 = new Account("GE00TB0000000000000003", "USD", 200);
 
-                    if (currentIndex < text.Length)
-                    {
-                        int index = text.IndexOfAny(sentenceEndings, currentIndex);
-                        if (index != -1)
-                        {
-                            result += text[index]; 
-                            currentIndex = index + 1;
-                        }
-                    }
+            Client client1 = new Client("anna", "smith", "01024085070", account1);
+            Client client2 = new Client("mariam", "green", "01024085071", account2);
+            Client client3 = new Client("avery", "lane", "01024085072", account3);
 
-                    result += " ";
-                }
-            }
+            client1.DisplayClientInfo();
+            client2.DisplayClientInfo();
+            client3.DisplayClientInfo();
 
-            return result.Trim();
-        
-    
+            client1.DepositMoney(500);
+            client1.WithdrawMoney(200);
+            client1.TransferMoney(client2, 300);
 
-}
+            client1.DisplayClientInfo();
+            client1.DisplayClientInfo();
+            client2.DisplayClientInfo();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
 }
