@@ -1,46 +1,78 @@
-﻿using System;
+﻿using CsharpHW.Animals;
+using System;
+using System.Collections.Generic;
 
-public class Program
+class Program
 {
-    public static void Main()
+    static void Main(string[] args)
     {
-        try
+        Console.WriteLine("=== Task 1: Animals ===");
+        List<IAnimal> animals = new List<IAnimal>
         {
+            new Dog(),
+            new Cat(),
+            new Dog()
+        };
 
-            Human person = new Human(
-                "Elene",
-                "Margalitadze",
-                25,
-                "01024085079",
-                "555123456",
-                "elenemarg@email.com"
-            );
-            person.DisplayInfoInConsole();
-
-
-            Account account1 = new Account("GE00TB0000000000000001", "GEL", 1000);
-            Account account2 = new Account("GE00TB0000000000000002", "GEL", 500);
-            Account account3 = new Account("GE00TB0000000000000003", "USD", 200);
-
-            Client client1 = new Client("anna", "smith", "01024085070", account1);
-            Client client2 = new Client("mariam", "green", "01024085071", account2);
-            Client client3 = new Client("avery", "lane", "01024085072", account3);
-
-            client1.DisplayClientInfo();
-            client2.DisplayClientInfo();
-            client3.DisplayClientInfo();
-
-            client1.DepositMoney(500);
-            client1.WithdrawMoney(200);
-            client1.TransferMoney(client2, 300);
-
-            client1.DisplayClientInfo();
-            client1.DisplayClientInfo();
-            client2.DisplayClientInfo();
-        }
-        catch (Exception ex)
+        foreach (var animal in animals)
         {
-            Console.WriteLine($"Error: {ex.Message}");
+            animal.MakeSound();
         }
+
+        Console.WriteLine("\n Task 2: Vehicle ");
+        Car myCar = new Car
+        {
+            Model = "Toyota Camry",
+            Year = 2023
+        };
+        myCar.Start();
+
+        Console.WriteLine("\n Task 3: Document ");
+        Document doc = new Document();
+        doc.Read();
+        doc.Write();
+
+        Console.WriteLine("\n Task 4: Payment System ");
+        Console.Write("Enter payment method (1 for Credit Card, 2 for PayPal): ");
+        string choice = Console.ReadLine();
+        Console.Write("Enter amount: ");
+        decimal amount = decimal.Parse(Console.ReadLine());
+
+        IPaymentProcessor processor;
+
+        if (choice == "1")
+        {
+            processor = new CreditCardPayment();
+        }
+        else
+        {
+            processor = new PayPalPayment();
+        }
+
+        processor.ProcessPayment(amount);
+
+        Console.WriteLine("\n  Task 5: Logger with Default Implementation ");
+        ILogger logger = new ConsoleLogger();
+        logger.Log("This is a regular log message");
+        logger.LogWithTime("This message includes timestamp");
+
+        Console.WriteLine("\n  Task 6: Polymorphism with Shapes ");
+        List<IShape> shapes = new List<IShape>
+        {
+            new Rectangle(5, 10),
+            new Circle(3),
+            new Rectangle(2, 4),
+            new Circle(5)
+        };
+
+        double totalArea = 0;
+        foreach (var shape in shapes)
+        {
+            double area = shape.GetArea();
+            Console.WriteLine($"Shape area: {area:F2}");
+            totalArea += area;
+        }
+
+        Console.WriteLine($"Total area of all shapes: {totalArea:F2}");
     }
 }
