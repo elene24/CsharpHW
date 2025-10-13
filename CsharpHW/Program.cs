@@ -1,78 +1,47 @@
-﻿using CsharpHW.Animals;
+﻿using AnimalSounds.Models;
+using Models;
 using System;
-using System.Collections.Generic;
 
-class Program
+namespace AnimalSounds
 {
-    static void Main(string[] args)
+    class Program
     {
-        Console.WriteLine("=== Task 1: Animals ===");
-        List<IAnimal> animals = new List<IAnimal>
+        static void Main(string[] args)
         {
-            new Dog(),
-            new Cat(),
-            new Dog()
-        };
+            try
+            {
+                // Create animals with names
+                Animal[] animals = {
+                    new Dog("Buddy"),
+                    new Cat("Whiskers"),
+                    new Dog("Max"),
+                    new Cat("Luna")
+                };
 
-        foreach (var animal in animals)
-        {
-            animal.MakeSound();
+                Console.WriteLine("=== ცხოველების ხმები ===");
+                Console.WriteLine("=== Animal Sounds ===\n");
+
+                // Make all animals sound
+                foreach (var animal in animals)
+                {
+                    animal.MakeSound();
+                }
+
+                // Test exception handling
+                Console.WriteLine("\n=== Testing Exception ===");
+                try
+                {
+                    var unnamedAnimal = new Dog(""); // This should throw exception
+                }
+                catch (ArgumentException ex)
+                {
+                    Console.WriteLine($"Exception caught: {ex.Message}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Unexpected error: {ex.Message}");
+            }
         }
-
-        Console.WriteLine("\n Task 2: Vehicle ");
-        Car myCar = new Car
-        {
-            Model = "Toyota Camry",
-            Year = 2023
-        };
-        myCar.Start();
-
-        Console.WriteLine("\n Task 3: Document ");
-        Document doc = new Document();
-        doc.Read();
-        doc.Write();
-
-        Console.WriteLine("\n Task 4: Payment System ");
-        Console.Write("Enter payment method (1 for Credit Card, 2 for PayPal): ");
-        string choice = Console.ReadLine();
-        Console.Write("Enter amount: ");
-        decimal amount = decimal.Parse(Console.ReadLine());
-
-        IPaymentProcessor processor;
-
-        if (choice == "1")
-        {
-            processor = new CreditCardPayment();
-        }
-        else
-        {
-            processor = new PayPalPayment();
-        }
-
-        processor.ProcessPayment(amount);
-
-        Console.WriteLine("\n  Task 5: Logger with Default Implementation ");
-        ILogger logger = new ConsoleLogger();
-        logger.Log("This is a regular log message");
-        logger.LogWithTime("This message includes timestamp");
-
-        Console.WriteLine("\n  Task 6: Polymorphism with Shapes ");
-        List<IShape> shapes = new List<IShape>
-        {
-            new Rectangle(5, 10),
-            new Circle(3),
-            new Rectangle(2, 4),
-            new Circle(5)
-        };
-
-        double totalArea = 0;
-        foreach (var shape in shapes)
-        {
-            double area = shape.GetArea();
-            Console.WriteLine($"Shape area: {area:F2}");
-            totalArea += area;
-        }
-
-        Console.WriteLine($"Total area of all shapes: {totalArea:F2}");
     }
 }
